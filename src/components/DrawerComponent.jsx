@@ -3,7 +3,7 @@ import { Toolbar, IconButton, Typography, Drawer, Divider, Slider } from '@mui/m
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-const DrawerComponent = () => {
+const DrawerComponent = ({ handleNodeSizeChange, helios }) => {
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState(50); // Initial value for the slider (adjust as needed)
 
@@ -18,7 +18,15 @@ const DrawerComponent = () => {
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
+    handleNodeSizeChange(newValue, helios);
+    console.log('helios instance from drawercomponent', helios);
     // add functionality here based on the slider value change
+    // Update node sizes using helios instance (if available)
+    if (helios) {
+     const newScale = Math.pow(10, newValue / 100); // Normalize value (0-100 to 0-1)
+     helios.nodesGlobalSizeScale(newScale);
+     helios.render();
+    }
   };
 
   return (
