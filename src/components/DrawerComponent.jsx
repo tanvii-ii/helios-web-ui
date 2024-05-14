@@ -3,10 +3,10 @@ import { Toolbar, IconButton, Typography, Drawer, Divider, Slider } from '@mui/m
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-const DrawerComponent = ({ handleNodeSizeChange, helios }) => {
+const DrawerComponent = ({ helios }) => {
   const [open, setOpen] = useState(false);
-  const [sliderValue, setSliderValue] = useState(50); // Initial value for the slider (adjust as needed)
-
+  const [nodeSize, nodeSizeSliderValue] = useState(50); // Initial value for the slider 
+  const [edgeOpacity, setEdgeOpacity] = useState(50);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -16,16 +16,21 @@ const DrawerComponent = ({ handleNodeSizeChange, helios }) => {
     setOpen(false);
   };
 
-  const handleSliderChange = (event, newValue) => {
-    setSliderValue(newValue);
-    handleNodeSizeChange(newValue, helios);
-    console.log('helios instance from drawercomponent', helios);
-    // add functionality here based on the slider value change
-    // Update node sizes using helios instance (if available)
+  const handleNodeSizeSlider = (event, newValue) => {
+    nodeSizeSliderValue(newValue);
+    // console.log('helios instance from drawercomponent', helios);
     if (helios) {
      const newScale = Math.pow(10, newValue / 100); // Normalize value (0-100 to 0-1)
      helios.nodesGlobalSizeScale(newScale);
      helios.render();
+    }
+  };
+
+  const handleEdgesOpacitySlider = (event, newValue) => {
+    setEdgeOpacity(newValue);
+    if (helios) {
+      helios.edgesGlobalOpacityScale(newValue / 100); // Normalize value (0-100 to 0-1)
+      helios.render();
     }
   };
 
@@ -47,11 +52,19 @@ const DrawerComponent = ({ handleNodeSizeChange, helios }) => {
         <Divider />
         <Typography variant="body1">Size</Typography>
         <Slider
-          value={sliderValue} // Set the initial value from state
-          onChange={handleSliderChange}
+          value={nodeSize} // Set the initial value from state
+          onChange={handleNodeSizeSlider}
           min={0} // Minimum value for the slider
           max={100} // Maximum value for the slider
           aria-labelledby="size-slider" 
+        />
+        <Typography variant="body1">Edges</Typography>
+        <Slider
+          value={edgeOpacity} // Set the initial value from state
+          onChange={handleEdgesOpacitySlider}
+          min={0} // Minimum value for the slider
+          max={100} // Maximum value for the slider
+          aria-labelledby="edges-slider" 
         />
         {/* Add more settings components here */}
       </Drawer>
