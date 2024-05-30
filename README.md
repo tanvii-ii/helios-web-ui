@@ -4,7 +4,7 @@ This React component provides a settings drawer for a helios-web visualization t
 
 # Setup
 1. npm install
-2. npm run dev (run just the UI component)
-3. npm build (to create bundled component)
+2. npm run dev
+3. npm build (creates bundled component in dist folder dist/drawer-component.es.js, dist/drawer-component.umd.js )
 
 UI Component can be integrated and tested with helios-web template: https://github.com/tanvii-ii/vite-heliosweb-template-main-ui
